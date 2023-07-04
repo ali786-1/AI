@@ -1,0 +1,92 @@
+class MissionariesAndCannibals:
+    def __init__(self,m1,c1):
+        self.m1 = m1
+        self.c1 = c1
+        #node -> (number of missionaries in left,number of cannibals in left,number of missionaries in right,number of cannibals in right,boat)
+        #node -> (m1,c1,m2,c2,b)
+        # if boat present in left => boat= True
+        self.root = (m1,c1,0,0,True)
+        self.graph = {}
+    def generate(self):
+        self.graph[self.root] = []
+        current_node = self.root
+        size = 2
+        open_list = [current_node]
+        pointer = 0
+        while not current_node == (0,0,self.m1,self.c1,False):
+            children = []
+            c = 0
+            while c < 5 and current_node[-1]:
+                if c==0 and current_node[0] >= size:
+                    child = (current_node[0]-size,current_node[1],current_node[2]+size,current_node[3],False)
+                elif c==1 and  current_node[1] >= size:
+                    child = (current_node[0],current_node[1]-size,current_node[2],current_node[3]+size,False)
+                elif c== 2 and current_node[0] >= 1 and current_node[1] >= 1:
+                    child = (current_node[0]-1,current_node[1]-1,current_node[2]+1,current_node[3]+1,False)
+                elif c== 3 and current_node[0] >= 1:
+                    child = (current_node[0]-1,current_node[1],current_node[2]+1,current_node[3],False)
+                elif c == 4 and current_node[1] >= 1:
+                    child = (current_node[0],current_node[1]-1,current_node[2],current_node[3]+1,False)
+                c += 1
+#                 if(current_node == (3, 1, 0, 2, True)):
+#                     print(child)
+                if ((child[0]>=child[1] and child[2]>=child[3]) or (child[0]==0 or child[2]==0))and (child not in children) and (child not in open_list):
+                    children.append(child)
+            c = 0
+            while c < 5 and not current_node[-1]:
+                if c==0 and current_node[2] >= size:
+                    child = (current_node[0]+size,current_node[1],current_node[2]-size,current_node[3],True)
+                elif c==1 and  current_node[3] >= size:
+                    child = (current_node[0],current_node[1]+size,current_node[2],current_node[3]-size,True)
+                elif c== 2 and current_node[2] >= 1 and current_node[3] >= 1:
+                    child = (current_node[0]+1,current_node[1]+1,current_node[2]-1,current_node[3]-1,True)
+                elif c== 3 and current_node[2] >= 1:
+                    child = (current_node[0]+1,current_node[1],current_node[2]-1,current_node[3],True)
+                elif c == 4 and current_node[3] >= 1:
+                    child = (current_node[0],current_node[1]+1,current_node[2],current_node[3]-1,True)
+                c += 1
+#                 if(current_node==(1, 1, 2, 2, False)):
+#                     print(child)
+                if ((child[0]>=child[1] and child[2]>=child[3]) or (child[0]==0 or child[2]==0)) and (child not in children) and (child not in open_list):
+                    children.append(child)
+            open_list.extend(children)
+            self.graph[current_node] = children
+            pointer += 1
+            current_node = open_list[pointer]
+    def printGraph(self):
+        for node in self.graph:
+            print(node,self.graph[node])
+    def bfs(self):
+        opened = [self.root]
+        closed = []
+        current_node = self.root
+        while current_node != (0,0,self.m1,self.c1,False):
+            closed.append(current_node)
+            for child in self.graph[current_node]:
+                if child not in opened:
+                    opened.append(child)
+            opened = opened[1:]
+#             print(current_node,"=>",opened)
+            if len(opened)==0:
+                break
+            current_node = opened[0]
+        for i in closed:
+            print(i)
+    def dfs(self):
+        opened=[self.root]
+        closed=[]
+        current_node=self.root
+        while current_node != (0,0,self.m1,self.c1,False):
+            closed.append(current_node)
+            for child in self.graph[current_node]:
+                if child not in opened:
+#                     print("HI")
+                    opened.insert(0,child)
+            current_node=opened[0]
+        for i in closed:
+            print(i)
+obj = MissionariesAndCannibals(3,3)
+obj.generate()
+# obj.printGraph()
+obj.bfs()
+# obj.dfs()
