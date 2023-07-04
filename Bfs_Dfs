@@ -1,0 +1,56 @@
+g = {
+  'A' : ['B','C','D'],
+  'B' : ['E', 'F'],
+  'C' : ['G','H'],
+  'D' : ['I','J'],
+  'E' : ['K','L'],
+  'F' : ['L','M'],
+  'G' : ['N'],
+  'H' : ['O','P'],
+  'I' : ['P','Q'],
+  'J' : ['R'],
+  'K':['S'],
+  'L':['T'],
+  'M':[],
+  'N':[],
+  'O':[],
+  'P':['U'],
+  'Q':[],
+  'R':[],
+  'S':[],
+  'T':[],
+  'U':[],
+}
+o=[]
+c=[]
+t='I'
+def bfs(v,g,node):
+  print(o,"\t",c)
+  o.append(node)
+  # c.append(node)
+  while o:
+    print(o," ",c)
+    k=o.pop(0)
+    if k==t:
+      break
+    for i in g[k]:
+      if i not in o:
+        o.append(i)
+    c.insert(0,k)
+# bfs(o,g,'A') 
+
+
+def dfs(v,g,node):
+  print(o,"\t",c)
+  o.append(node)
+  # c.append(node)
+  while o:
+    print(o," ",c)
+    k=o.pop(0)
+    if k==t:
+      break
+    for i in g[k]:
+      if i not in v:
+        o.insert(0,i)
+    c.insert(0,k)
+dfs(o,g,'A')
