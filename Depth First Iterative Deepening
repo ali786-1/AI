@@ -1,0 +1,21 @@
+graph = {1:[2, 3], 2:[4, 5], 3:[6, 7], 4:[8, 9], 5:[10, 11]}
+print(graph)
+def dfis(g,root,target,depth):
+    for i in range(depth):
+        print(i+1,'th iteration')
+        if dls(g,root,target,i):
+            return True
+    return False
+def dls(g,root,target,depth):
+    if root==target:
+        return True
+    print(root)
+    if depth<=0:
+        return False
+    for i in g[root]:
+        if dls(g,i,target,depth-1):
+            return True
+    return False
+
+dfis(graph,1,7,3)
+
