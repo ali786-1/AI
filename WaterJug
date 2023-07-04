@@ -1,0 +1,61 @@
+class WaterJugProbelm:
+    def __init__(self,m,n,goal):
+        self.graph = {}
+        self.x = (0,0)
+        self.graph[self.x] = []
+        self.goal = goal
+        self.m = m
+        self.n = n
+    def generate(self):
+        open =[self.x]
+        closed = []
+        m = self.m
+        n = self.n
+        while self.x[0] != self.goal:
+            #filling first jug
+            if self.x[0]<m:
+                self.graph[self.x].append((m,self.x[1]))
+            #filling second jug
+            if self.x[1]<n:
+                self.graph[self.x].append((self.x[0],n))
+            #empty first jug
+            if self.x[0]>0:
+                self.graph[self.x].append((0,self.x[1]))
+            #empty second jug
+            if self.x[1]>0:
+                self.graph[self.x].append((self.x[0],0))
+            #transfer into fisrt jug
+            if self.x[0]<m:
+                if self.x[1]>0:
+                    if self.x[0]+self.x[1]<=m:
+                        self.graph[self.x].append((self.x[0]+self.x[1],0))
+                    else:
+                        self.graph[self.x].append((m,self.x[0]+self.x[1]-m))
+            #transfer into second jug
+            if self.x[1]<n:
+                if self.x[0]>0:
+                    if self.x[0]+self.x[1]<=n:
+                        self.graph[self.x].append((0,self.x[0]+self.x[1]))
+                    else:
+                        self.graph[self.x].append((self.x[0]+self.x[1]-n,n))
+            #bfs implementation    
+            for i in self.graph[self.x]:
+                if i not in closed:
+                    open.append(i)
+            closed.append(self.x)        
+            open = open[1:]
+            self.x = open[0]
+            self.graph[self.x] = []
+    def printPath(self):
+        nodes = list(self.graph.keys())
+        nodes.reverse()
+        path = [nodes[0]]
+        for i in range(1,len(nodes)):
+            if path[-1] in self.graph[nodes[i]]:
+                path.append(nodes[i])
+        path.reverse()
+        print(path)
+obj = WaterJugProbelm(4,3,2)
+obj.generate()
+obj.printPath()
+        
